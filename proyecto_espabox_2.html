@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Proyecto — EspaBox (hors ligne)</title>
+<style>
+  :root{
+    --rojo:#B3282D; --rojo-d:#8f2024; --gris:#F5F2ED; --noir:#222222; --gtexto:#5b5b5b;
+    --verde:#2E6B4F; --border:#dcd7cf;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:#FBFAF7; color:var(--noir); padding-bottom:60px;
+  }
+  header{
+    background:var(--rojo); color:#fff; padding:14px 16px; position:sticky; top:0; z-index:20;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  header h1{margin:0; font-size:1.15rem;}
+  header .sub{font-size:.78rem; opacity:.9; margin-top:2px;}
+  .wrap{max-width:720px; margin:0 auto; padding:14px;}
+  .card{
+    background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px;
+    margin-bottom:14px;
+  }
+  .card h2{margin:0 0 10px; font-size:1rem; color:var(--rojo); display:flex; align-items:center; gap:8px;}
+  .card h3{margin:14px 0 4px; font-size:.9rem;}
+  label{display:block; font-size:.82rem; font-weight:600; margin:10px 0 4px;}
+  .aide{font-size:.76rem; color:var(--gtexto); font-style:italic; margin:0 0 4px;}
+  input[type=text], input[type=date], textarea, select{
+    width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px;
+    font-size:.9rem; font-family:inherit; background:#fff;
+  }
+  textarea{min-height:60px; resize:vertical;}
+  .row{display:flex; gap:10px; flex-wrap:wrap;}
+  .row > div{flex:1; min-width:140px;}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;}
+  .chip{
+    background:var(--gris); border:1px solid var(--border); border-radius:20px; padding:6px 12px;
+    font-size:.8rem; cursor:pointer; user-select:none;
+  }
+  .chip.actif{background:var(--rojo); color:#fff; border-color:var(--rojo);}
+  .chiffres{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0;}
+  .chiffre{background:var(--gris); border-radius:8px; text-align:center; padding:8px 4px;}
+  .chiffre b{display:block; font-size:1.15rem; color:var(--rojo);}
+  .chiffre span{font-size:.7rem; color:var(--gtexto);}
+  ul.attendus{padding-left:0; list-style:none; margin:8px 0;}
+  ul.attendus li{
+    display:flex; gap:8px; align-items:flex-start; padding:5px 0; font-size:.86rem;
+  }
+  ul.attendus input{width:auto; margin-top:3px;}
+  .etapa{border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:10px;}
+  .etapa summary{font-weight:600; font-size:.88rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center;}
+  .etapa .badge{font-size:.7rem; background:var(--gris); border-radius:12px; padding:2px 8px; color:var(--gtexto);}
+  .etapa .badge.done{background:var(--verde); color:#fff;}
+  .tache{display:flex; gap:8px; align-items:flex-start; padding:4px 0; font-size:.83rem;}
+  .tache input{width:auto; margin-top:3px;}
+  .etapa .datefield{margin-top:8px; display:flex; align-items:center; gap:8px; font-size:.8rem;}
+  .etapa .datefield input{width:auto; flex:none;}
+  table{width:100%; border-collapse:collapse; margin-top:6px; font-size:.83rem;}
+  th, td{border:1px solid var(--border); padding:6px 7px; text-align:left;}
+  th{background:var(--gris); font-size:.75rem;}
+  td input, td select{border:none; padding:2px; font-size:.83rem;}
+  .btnrow{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;}
+  button{
+    font-family:inherit; border:none; border-radius:8px; padding:8px 14px; font-size:.83rem;
+    cursor:pointer; background:var(--gris); color:var(--noir);
+  }
+  button.primary{background:var(--rojo); color:#fff;}
+  button.small{padding:5px 10px; font-size:.76rem;}
+  .del{background:none; color:#b33; font-size:1.1rem; padding:2px 6px;}
+  .barra{
+    position:sticky; bottom:0; background:#fff; border-top:1px solid var(--border);
+    padding:10px 16px; display:flex; gap:10px; justify-content:center; z-index:20;
+  }
+  .progreso{background:var(--gris); border-radius:10px; padding:10px 12px; font-size:.82rem;}
+  .progreso .item{display:flex; justify-content:space-between; padding:2px 0;}
+  .ok{color:var(--verde); font-weight:600;}
+  .falta{color:var(--rojo); font-weight:600;}
+  #pantallaInicio .niveaux{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0;}
+  .nivbtn{
+    flex:1; min-width:140px; border:2px solid var(--border); border-radius:12px; padding:14px;
+    text-align:center; cursor:pointer; background:#fff;
+  }
+  .nivbtn b{display:block; font-size:1rem; color:var(--rojo); margin-bottom:3px;}
+  .nivbtn span{font-size:.76rem; color:var(--gtexto);}
+  .nivbtn.actif{border-color:var(--rojo); background:#FCEEEE;}
+  #appPrincipal{display:none;}
+  .exemplo{background:var(--gris); border-radius:8px; padding:8px 10px; margin-top:6px; font-size:.8rem;}
+  .exemplo b{color:var(--rojo);}
+  @media print{
+    header, .barra, button, .no-print{display:none !important;}
+    body{padding:0; background:#fff;}
+    .card{border:1px solid #999; break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>PROYECTO — EspaBox</h1>
+  <div class="sub">Version hors ligne — fonctionne sans Wi-Fi, sauvegarde automatique sur cet appareil</div>
+</header>
+
+<div class="wrap">
+
+  <div id="pantallaInicio" class="card">
+    <h2>👋 Empezamos</h2>
+    <label>Mi nombre y apellido</label>
+    <input type="text" id="iNombre" placeholder="Nombre Apellido">
+    <label>Mi clase</label>
+    <input type="text" id="iClase" placeholder="ej. 1MA">
+    <label>Mi nivel</label>
+    <div class="niveaux" id="selNiveau"></div>
+    <div class="btnrow">
+      <button class="primary" onclick="iniciar()">Empezar / Continuar</button>
+    </div>
+  </div>
+
+  <div id="appPrincipal">
+
+    <div class="card" id="progresoCard"></div>
+
+    <div class="card">
+      <h2>1. Mi formato — ¿cómo puede ser mi proyecto?</h2>
+      <div id="formatoInfo"></div>
+      <div id="ejemplos"></div>
+    </div>
+
+    <div class="card">
+      <h2>2. Mi proyecto</h2>
+      <label>Mi tipo de proyecto</label>
+      <select id="pTipo"></select>
+      <label>Título de mi proyecto</label>
+      <input type="text" id="pTitulo">
+      <label>Mise en situation (contexto)</label>
+      <textarea id="pContexto"></textarea>
+      <label>Tarea final (qué debo producir)</label>
+      <textarea id="pTarea"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>3. Lo que se espera</h2>
+      <div id="exigenciasResumen"></div>
+      <div class="chiffres" id="chiffresGrid"></div>
+      <h3>Para ser validado, mi proyecto debe mostrar que sé:</h3>
+      <ul class="attendus" id="attendusList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Mi cadrage — el plan</h2>
+      <label>Introducción — mi problemática u objetivo</label>
+      <div class="aide" id="aideIntro"></div>
+      <textarea id="cIntro" rows="3"></textarea>
+      <div id="partesZone"></div>
+      <label>Conclusión — mi respuesta a la problemática</label>
+      <div class="aide" id="aideConclusion"></div>
+      <textarea id="cConclusion" rows="3"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>5. Mi calendario</h2>
+      <div id="etapasZone"></div>
+    </div>
+
+    <div class="card">
+      <h2>6. Mi vocabulario nuevo</h2>
+      <table id="vocabTable">
+        <thead><tr><th>Palabra en español</th><th>Traducción</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="btnrow"><button class="small" onclick="addVocabRow()">+ Añadir palabra</button></div>
+    </div>
+
+    <div class="card">
+      <h2>7. Mis fuentes</h2>
+      <table id="fuentesTable">
+        <thead><tr><th>Tipo</th><th>Título / referencia</th><th>Fiabilidad</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="btnrow"><button class="small" onclick="addFuenteRow()">+ Añadir fuente</button></div>
+    </div>
+
+    <div class="btnrow no-print" style="justify-content:center; margin-top:4px;">
+      <button onclick="cambiarNivel()">↺ Cambiar de nivel / alumno</button>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="barra no-print" id="barraInferior" style="display:none;">
+  <button class="primary" onclick="window.print()">🖨️ Imprimir / Exportar PDF</button>
+</div>
+
+<script>
+// ── Datos oficiales EspaBox (reproducidos de app.py — FORMAT_NIVEAU,
+//    PROJET_EXIGENCES, ETAPAS_PROYECTO_ESTANDAR, SOURCE_TYPES, SOURCE_FIABILITE) ──
+const FORMAT_NIVEAU = {
+  "2de": {
+    label: "2de", labelLargo: "2de — Iniciación",
+    formato: "Format visuel ou imprimé",
+    tipos: ["Cartel","Infografía","Folleto","Fanzine","Mapa mental"],
+    objetivo: "Synthétiser l'information, construire des phrases courtes, soigner la mise en page.",
+    ejemplos: [
+      ["Cartel","« Mi país hispanohablante favorito » : présente un pays (drapeau, capitale, 2 lieux connus) et dis pourquoi il te plaît."],
+      ["Infografía","Comparaison rapide entre deux plats typiques (ex. tacos / paella) : ingrédients, origine, quand on les mange."],
+      ["Folleto","Dépliant touristique de 3 lieux à visiter dans une ville hispanophone, avec une phrase de présentation pour chacun."],
+      ["Fanzine","Mini-fanzine sur un(e) chanteur/euse ou sportif/ve hispanophone : infos de base + ce qui te plaît chez lui/elle."],
+      ["Mapa mental","Carte mentale sur tes activités préférées en espagnol : vocabulaire et phrases simples."],
+    ],
+  },
+  "1ere": {
+    label: "1re", labelLargo: "1re — Action",
+    formato: "Format audio / vidéo",
+    tipos: ["Capsule type TikTok / Reels","Podcast","Doublage","Reportage"],
+    objetivo: "Travailler la prononciation, gagner en aisance orale, apprendre à monter un audio ou une vidéo.",
+    ejemplos: [
+      ["Capsule type TikTok / Reels","« Mi ciudad ideal » : compare deux villes hispanophones et explique laquelle tu préfères et pourquoi. 30 à 60 sec."],
+      ["Podcast","Interview imaginaire d'un(e) sportif/artiste hispanophone : 5 questions, 5 réponses, + ton avis personnel."],
+      ["Doublage","Redouble une scène courte (1 min) en changeant les dialogues originaux par tes propres phrases."],
+      ["Reportage","Reportage sur une fête ou tradition d'un pays hispanophone : présentation + 2 comparaisons avec la France."],
+    ],
+  },
+  "terminale": {
+    label: "Tle", labelLargo: "Tle — Maîtrise",
+    formato: "Format interactif ou événement",
+    tipos: ["Jeu de société","Escape game","Exposition avec visite guidée","Campagne multi-supports"],
+    objetivo: "Gérer un projet complexe en autonomie, faire interagir un public.",
+    ejemplos: [
+      ["Jeu de société","Jeu de cartes « pour / contre » sur un sujet qui fait débat (ex. le tourisme de masse en Espagne), à défendre en espagnol."],
+      ["Escape game","Escape game autour d'une énigme culturelle ou historique hispanophone, indices et énigmes rédigés en espagnol."],
+      ["Exposition avec visite guidée","Exposition sur un(e) artiste hispanophone, avec un texte de visite guidée qui argumente son importance."],
+      ["Campagne multi-supports","Campagne de sensibilisation (affiche + vidéo + publication) sur un sujet d'actualité, avec arguments et objections."],
+    ],
+  },
+};
+
+const PROJET_EXIGENCES = {
+  "2de": {
+    label:"2de", cecrl:"A2",
+    resume:"Décrire simplement, avec des phrases courtes reliées entre elles.",
+    min_parties:2, min_mots:60, min_sources:2, duree_oral_min:1,
+    attendus:[
+      "Décrire et présenter des faits simples avec un vocabulaire courant",
+      "Relier ses phrases (y, pero, porque, después)",
+      "Dire ce qu'on aime ou n'aime pas, et pourquoi",
+      "Citer au moins 2 sources",
+    ],
+    aide_intro:"Présente ton sujet en 1 phrase simple.",
+    aide_partie:"Décris avec des phrases courtes. Relie-les (y, pero, porque, después).",
+    aide_conclusion:"Dis ce que tu préfères ou ce qui te plaît, et pourquoi.",
+  },
+  "1ere": {
+    label:"1re", cecrl:"A2+",
+    resume:"Organiser son propos, justifier ses choix, exprimer un point de vue simple.",
+    min_parties:3, min_mots:110, min_sources:3, duree_oral_min:2,
+    attendus:[
+      "Structurer : une introduction, des parties distinctes, une conclusion",
+      "Justifier ses choix et exprimer une préférence argumentée",
+      "Comparer (más… que, el mejor…)",
+      "Croiser au moins 3 sources et les citer",
+      "Faire des transitions entre les parties",
+    ],
+    aide_intro:"Présente ton sujet en 1-2 phrases et annonce ce que tu vas montrer ou comparer.",
+    aide_partie:"Développe une idée par partie. Justifie tes choix, compare (más… que, menos… que, el/la mejor…).",
+    aide_conclusion:"Reviens à ta question de départ : quelle est ta préférence, et pourquoi ?",
+  },
+  "terminale": {
+    label:"Tle", cecrl:"B1",
+    resume:"Argumenter, nuancer, défendre un point de vue face à un contradicteur.",
+    min_parties:3, min_mots:160, min_sources:4, duree_oral_min:3,
+    attendus:[
+      "Développer une argumentation : avantages / inconvénients, nuances",
+      "Défendre un point de vue personnel et réagir à une objection",
+      "Utiliser des connecteurs logiques (sin embargo, por lo tanto, aunque)",
+      "Croiser au moins 4 sources et en évaluer la fiabilité",
+      "Employer des temps variés (passé, futur, conditionnel)",
+    ],
+    aide_intro:"Présente le sujet et la problématique précise à laquelle tu vas répondre.",
+    aide_partie:"Développe un argument par partie, avec une nuance ou une objection. Utilise des connecteurs (sin embargo, por lo tanto, aunque).",
+    aide_conclusion:"Réponds clairement à ta problématique et assume un point de vue personnel.",
+  },
+};
+
+const ETAPAS = [
+  {titre:"Semana 1 · Cadrage et premières recherches", taches:[
+    "Préciser mon sujet exact et mon angle personnel",
+    "Faire valider le sujet par le/la professeur(e) — je n'avance pas sans ce feu vert !",
+    "Chercher et noter 2-3 sources fiables"]},
+  {titre:"Semana 2 · Plan et structure", taches:[
+    "Mettre en commun ce que j'ai trouvé (si binôme/groupe)",
+    "Rédiger le plan détaillé",
+    "Faire la liste du matériel nécessaire"]},
+  {titre:"Semana 3 · Production", taches:[
+    "Rédiger le contenu de chaque partie",
+    "Réunir ou créer les images, dessins ou objets"]},
+  {titre:"Semana 4 · Centralisation et première version", taches:[
+    "Rassembler tous les textes dans un seul document",
+    "Créer la structure du support visuel",
+    "Montrer une version au professeur"]},
+  {titre:"Semana 5 · Derniers réglages", taches:[
+    "Corriger les fautes d'orthographe et soigner la présentation",
+    "Finaliser le support",
+    "Rendre le dossier écrit si demandé"]},
+  {titre:"Semana 6 · Entraînement à l'oral", taches:[
+    "Me chronométrer",
+    "Faire au moins 2 simulations complètes, sans notes"]},
+];
+
+const SOURCE_TYPES = ["Site web","Livre","Vidéo","IA (ChatGPT, Claude…)","Personne interrogée","Autre"];
+const SOURCE_FIABILITE = ["À évaluer","Fiable","À vérifier","Peu fiable"];
+
+// ── Estado / persistencia ──────────────────────────────────────────────
+const KEY = "espabox_proyecto_v1";
+let ST = null;
+
+function estadoVacio(niveau){
+  return {
+    niveau, nombre:"", clase:"",
+    tipo:"", titulo:"", contexto:"", tarea:"",
+    intro:"", partes:[], conclusion:"",
+    etapasDone:{}, etapasFecha:{},
+    vocab:[], fuentes:[],
+  };
+}
+
+function guardar(){
+  try{ localStorage.setItem(KEY, JSON.stringify(ST)); }catch(e){}
+}
+function cargar(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+
+// ── Pantalla inicio ─────────────────────────────────────────────────────
+function pintarSelectorNiveau(actual){
+  const z = document.getElementById('selNiveau');
+  z.innerHTML = '';
+  Object.keys(FORMAT_NIVEAU).forEach(k=>{
+    const f = FORMAT_NIVEAU[k];
+    const d = document.createElement('div');
+    d.className = 'nivbtn' + (k===actual ? ' actif' : '');
+    d.innerHTML = `<b>${f.labelLargo}</b><span>${f.formato}</span>`;
+    d.onclick = ()=>{ pintarSelectorNiveau(k); d.dataset.sel='1'; window._nivChoisi = k; };
+    d.dataset.niveau = k;
+    z.appendChild(d);
+  });
+  window._nivChoisi = actual || Object.keys(FORMAT_NIVEAU)[0];
+}
+
+function iniciar(){
+  const nombre = document.getElementById('iNombre').value.trim();
+  const clase = document.getElementById('iClase').value.trim();
+  const niveau = window._nivChoisi || "1ere";
+  if(!ST || ST.niveau !== niveau){
+    ST = estadoVacio(niveau);
+  }
+  ST.nombre = nombre; ST.clase = clase; ST.niveau = niveau;
+  guardar();
+  document.getElementById('pantallaInicio').style.display = 'none';
+  document.getElementById('appPrincipal').style.display = 'block';
+  document.getElementById('barraInferior').style.display = 'flex';
+  pintarApp();
+}
+
+function cambiarNivel(){
+  document.getElementById('appPrincipal').style.display = 'none';
+  document.getElementById('barraInferior').style.display = 'none';
+  document.getElementById('pantallaInicio').style.display = 'block';
+  document.getElementById('iNombre').value = ST ? ST.nombre : '';
+  document.getElementById('iClase').value = ST ? ST.clase : '';
+  pintarSelectorNiveau(ST ? ST.niveau : null);
+}
+
+// ── Pintado app principal ──────────────────────────────────────────────
+function pintarApp(){
+  const fmt = FORMAT_NIVEAU[ST.niveau];
+  const exi = PROJET_EXIGENCES[ST.niveau];
+
+  // 1. Formato
+  document.getElementById('formatoInfo').innerHTML =
+    `<p style="font-size:.88rem;margin:0 0 4px"><b>Format imposé pour ${exi.label} :</b> ${fmt.formato} — ${fmt.tipos.join(', ')}.</p>
+     <p style="font-size:.88rem;margin:0">${fmt.objetivo}</p>`;
+  document.getElementById('ejemplos').innerHTML = fmt.ejemplos.map(([t,d])=>
+    `<div class="exemplo"><b>${t}</b> — ${d}</div>`).join('');
+
+  // 2. Mon proyecto
+  const selTipo = document.getElementById('pTipo');
+  selTipo.innerHTML = '<option value="">— elegir —</option>' +
+    fmt.tipos.map(t=>`<option value="${t}" ${ST.tipo===t?'selected':''}>${t}</option>`).join('');
+  document.getElementById('pTitulo').value = ST.titulo || '';
+  document.getElementById('pContexto').value = ST.contexto || '';
+  document.getElementById('pTarea').value = ST.tarea || '';
+
+  // 3. Exigencias
+  document.getElementById('exigenciasResumen').innerHTML =
+    `<p style="font-weight:600;color:var(--rojo);margin:0 0 6px">${exi.resume}</p>
+     <p style="font-size:.78rem;color:var(--gtexto);margin:0">Niveau ${exi.label} · CECRL ${exi.cecrl}</p>`;
+  document.getElementById('chiffresGrid').innerHTML = `
+    <div class="chiffre"><b>${exi.min_parties}</b><span>parties min.</span></div>
+    <div class="chiffre"><b>${exi.min_mots}</b><span>mots min.</span></div>
+    <div class="chiffre"><b>${exi.min_sources}</b><span>sources min.</span></div>
+    <div class="chiffre"><b>${exi.duree_oral_min} min</b><span>oral min.</span></div>`;
+  document.getElementById('attendusList').innerHTML = exi.attendus.map((a,i)=>
+    `<li><input type="checkbox" id="att${i}"><label for="att${i}" style="margin:0;font-weight:400">${a}</label></li>`).join('');
+
+  // 4. Cadrage
+  document.getElementById('aideIntro').textContent = "Aide : " + exi.aide_intro;
+  document.getElementById('aideConclusion').textContent = "Aide : " + exi.aide_conclusion;
+  document.getElementById('cIntro').value = ST.intro || '';
+  document.getElementById('cConclusion').value = ST.conclusion || '';
+  if(!ST.partes || ST.partes.length !== exi.min_parties){
+    const old = ST.partes || [];
+    ST.partes = [];
+    for(let i=0;i<exi.min_parties;i++) ST.partes.push(old[i] || {titulo:'',contenido:''});
+  }
+  const pz = document.getElementById('partesZone');
+  pz.innerHTML = '';
+  ST.partes.forEach((p,i)=>{
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <label>Partie ${i+1} — titre</label>
+      ${i===0 ? `<div class="aide">Aide : ${exi.aide_partie}</div>` : ''}
+      <input type="text" data-parte-titulo="${i}" value="${escAttr(p.titulo)}">
+      <textarea data-parte-contenido="${i}" rows="3" style="margin-top:6px">${escHtml(p.contenido)}</textarea>`;
+    pz.appendChild(div);
+  });
+
+  // 5. Etapas
+  const ez = document.getElementById('etapasZone');
+  ez.innerHTML = '';
+  ETAPAS.forEach((et,i)=>{
+    const doneCount = et.taches.filter((_,j)=>ST.etapasDone[i+'_'+j]).length;
+    const details = document.createElement('details');
+    details.className = 'etapa';
+    details.open = i===0;
+    const fecha = ST.etapasFecha[i] || '';
+    details.innerHTML = `
+      <summary>${et.titre} <span class="badge ${doneCount===et.taches.length?'done':''}">${doneCount}/${et.taches.length}</span></summary>
+      ${et.taches.map((t,j)=>`
+        <div class="tache">
+          <input type="checkbox" data-et="${i}" data-ta="${j}" ${ST.etapasDone[i+'_'+j]?'checked':''}>
+          <label style="margin:0;font-weight:400">${t}</label>
+        </div>`).join('')}
+      <div class="datefield">Ma date objectif : <input type="date" data-etfecha="${i}" value="${fecha}"></div>`;
+    ez.appendChild(details);
+  });
+
+  // 6. Vocabulario
+  pintarVocab();
+  // 7. Fuentes
+  pintarFuentes();
+
+  // Listeners
+  cablearListeners();
+  actualizarProgreso();
+}
+
+function pintarVocab(){
+  const tbody = document.querySelector('#vocabTable tbody');
+  tbody.innerHTML = '';
+  if(!ST.vocab.length) ST.vocab.push({es:'',fr:''});
+  ST.vocab.forEach((v,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" data-voc-es="${i}" value="${escAttr(v.es)}"></td>
+      <td><input type="text" data-voc-fr="${i}" value="${escAttr(v.fr)}"></td>
+      <td><button class="del" onclick="delVocabRow(${i})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+function addVocabRow(){ ST.vocab.push({es:'',fr:''}); guardar(); pintarVocab(); cablearListeners(); }
+function delVocabRow(i){ ST.vocab.splice(i,1); guardar(); pintarVocab(); cablearListeners(); }
+
+function pintarFuentes(){
+  const tbody = document.querySelector('#fuentesTable tbody');
+  tbody.innerHTML = '';
+  if(!ST.fuentes.length) ST.fuentes.push({tipo:'',titulo:'',fiabilidad:''});
+  ST.fuentes.forEach((f,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select data-fu-tipo="${i}">
+        <option value="">—</option>
+        ${SOURCE_TYPES.map(t=>`<option value="${t}" ${f.tipo===t?'selected':''}>${t}</option>`).join('')}
+      </select></td>
+      <td><input type="text" data-fu-titulo="${i}" value="${escAttr(f.titulo)}"></td>
+      <td><select data-fu-fiab="${i}">
+        <option value="">—</option>
+        ${SOURCE_FIABILITE.map(t=>`<option value="${t}" ${f.fiabilidad===t?'selected':''}>${t}</option>`).join('')}
+      </select></td>
+      <td><button class="del" onclick="delFuenteRow(${i})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+function addFuenteRow(){ ST.fuentes.push({tipo:'',titulo:'',fiabilidad:''}); guardar(); pintarFuentes(); cablearListeners(); }
+function delFuenteRow(i){ ST.fuentes.splice(i,1); guardar(); pintarFuentes(); cablearListeners(); }
+
+function contarPalabras(txt){
+  return (txt||'').trim().split(/\s+/).filter(Boolean).length;
+}
+
+function actualizarProgreso(){
+  const exi = PROJET_EXIGENCES[ST.niveau];
+  const partesLlenas = ST.partes.filter(p=>p.titulo.trim() && p.contenido.trim()).length;
+  const totalMots = contarPalabras(ST.intro) + contarPalabras(ST.conclusion) +
+    ST.partes.reduce((s,p)=>s+contarPalabras(p.titulo)+contarPalabras(p.contenido),0);
+  const nbFuentes = ST.fuentes.filter(f=>f.titulo && f.titulo.trim()).length;
+  const items = [
+    {label:`Parties développées`, ok: partesLlenas>=exi.min_parties, detail:`${partesLlenas}/${exi.min_parties}`},
+    {label:`Mots au total`, ok: totalMots>=exi.min_mots, detail:`${totalMots}/${exi.min_mots}`},
+    {label:`Sources citées`, ok: nbFuentes>=exi.min_sources, detail:`${nbFuentes}/${exi.min_sources}`},
+    {label:`Introduction remplie`, ok: !!ST.intro.trim(), detail: ST.intro.trim()?'✓':'—'},
+    {label:`Conclusion remplie`, ok: !!ST.conclusion.trim(), detail: ST.conclusion.trim()?'✓':'—'},
+  ];
+  document.getElementById('progresoCard').innerHTML = `
+    <h2>📊 Mon avancement</h2>
+    <div class="progreso">
+      ${items.map(it=>`<div class="item"><span>${it.label}</span><span class="${it.ok?'ok':'falta'}">${it.detail}</span></div>`).join('')}
+    </div>`;
+}
+
+function cablearListeners(){
+  document.getElementById('pTipo').oninput = e=>{ ST.tipo = e.target.value; guardar(); };
+  document.getElementById('pTitulo').oninput = e=>{ ST.titulo = e.target.value; guardar(); };
+  document.getElementById('pContexto').oninput = e=>{ ST.contexto = e.target.value; guardar(); };
+  document.getElementById('pTarea').oninput = e=>{ ST.tarea = e.target.value; guardar(); };
+  document.getElementById('cIntro').oninput = e=>{ ST.intro = e.target.value; guardar(); actualizarProgreso(); };
+  document.getElementById('cConclusion').oninput = e=>{ ST.conclusion = e.target.value; guardar(); actualizarProgreso(); };
+
+  document.querySelectorAll('[data-parte-titulo]').forEach(el=>{
+    el.oninput = e=>{ ST.partes[+el.dataset.parteTitulo].titulo = e.target.value; guardar(); actualizarProgreso(); };
+  });
+  document.querySelectorAll('[data-parte-contenido]').forEach(el=>{
+    el.oninput = e=>{ ST.partes[+el.dataset.parteContenido].contenido = e.target.value; guardar(); actualizarProgreso(); };
+  });
+  document.querySelectorAll('[data-et]').forEach(el=>{
+    el.onchange = e=>{ ST.etapasDone[el.dataset.et+'_'+el.dataset.ta] = e.target.checked; guardar(); pintarApp(); };
+  });
+  document.querySelectorAll('[data-etfecha]').forEach(el=>{
+    el.onchange = e=>{ ST.etapasFecha[el.dataset.etfecha] = e.target.value; guardar(); };
+  });
+  document.querySelectorAll('[data-voc-es]').forEach(el=>{
+    el.oninput = e=>{ ST.vocab[+el.dataset.vocEs].es = e.target.value; guardar(); };
+  });
+  document.querySelectorAll('[data-voc-fr]').forEach(el=>{
+    el.oninput = e=>{ ST.vocab[+el.dataset.vocFr].fr = e.target.value; guardar(); };
+  });
+  document.querySelectorAll('[data-fu-tipo]').forEach(el=>{
+    el.onchange = e=>{ ST.fuentes[+el.dataset.fuTipo].tipo = e.target.value; guardar(); };
+  });
+  document.querySelectorAll('[data-fu-titulo]').forEach(el=>{
+    el.oninput = e=>{ ST.fuentes[+el.dataset.fuTitulo].titulo = e.target.value; guardar(); actualizarProgreso(); };
+  });
+  document.querySelectorAll('[data-fu-fiab]').forEach(el=>{
+    el.onchange = e=>{ ST.fuentes[+el.dataset.fuFiab].fiabilidad = e.target.value; guardar(); };
+  });
+}
+
+function escHtml(s){ return (s||'').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function escAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+
+// ── Arranque ────────────────────────────────────────────────────────────
+(function(){
+  ST = cargar();
+  if(ST && ST.nombre){
+    document.getElementById('pantallaInicio').style.display = 'none';
+    document.getElementById('appPrincipal').style.display = 'block';
+    document.getElementById('barraInferior').style.display = 'flex';
+    pintarApp();
+  }else{
+    pintarSelectorNiveau(null);
+  }
+})();
+</script>
+</body>
+</html>

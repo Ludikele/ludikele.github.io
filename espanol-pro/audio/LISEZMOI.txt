@@ -1,0 +1,19 @@
+Déposer ici les 14 fichiers MP3, avec exactement ces noms (minuscules, sans espace) :
+
+2de_piste01.mp3   ->  Séance 1 · En la secretaría del instituto
+2de_piste02.mp3   ->  Séance 5 · El contestador de ElectroHogar
+2de_piste03.mp3   ->  Séance 7 · Tres citas para la señora Ortega
+2de_piste04.mp3   ->  Séance 10 · En la recepción del Hotel Sol y Mar
+2de_piste05.mp3   ->  Séance 14 · Bingo de precios
+1re_piste01.mp3   ->  Séance 6 · La entrevista de Mateo
+1re_piste02.mp3   ->  Séance 9 · Oficinas centrales
+1re_piste03.mp3   ->  Séance 10 · Estrés en la recepción de InnoTech
+1re_piste04.mp3   ->  Séance 11 · Tres mensajes para InnoTech
+1re_piste05.mp3   ->  Séance 13 · Habitación 304
+tle_piste01.mp3   ->  Séance 2 · En la tienda de muebles CasaViva
+tle_piste02.mp3   ->  Séance 5 · Zapatillas de montaña
+tle_piste03.mp3   ->  Séance 10 · La cafetera de la señora Díaz
+tle_piste04.mp3   ->  Séance 13 · Moda Joven negocia con Textiles Alba
+
+Les QR codes des livrets pointent vers :
+https://ludikele.github.io/espanol-pro/audio/<nom_du_fichier>.mp3
