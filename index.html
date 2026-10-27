@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Livret Terminale — Medios</title>
+<style>
+  :root{--fondo:#F7F4EE;--texto:#1F2A24;--verde:#2E6B4F;--borde:#E3DCD2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fondo);color:var(--texto)}
+  main{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:1.3rem;margin:0 0 4px}
+  p{line-height:1.5}
+  .tarjeta{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:16px;margin:12px 0}
+  .boton{display:block;text-align:center;background:var(--verde);color:#fff;text-decoration:none;
+         font-weight:700;padding:14px;border-radius:10px;margin-top:12px}
+  audio{width:100%;margin-top:12px}
+  ul{padding-left:18px} li{margin:6px 0}
+  a{color:var(--verde)}
+  .nota{font-size:.85rem;color:#5A6A61}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* ============================================================
+   LISTE DES MÉDIAS DU LIVRET TERMINALE
+   Pour changer un lien : remplace seulement l'adresse entre
+   guillemets après  url:  puis enregistre (« Commit changes »).
+   Les QR codes imprimés n'ont PAS besoin d'être refaits.
+   ============================================================ */
+const MEDIOS = {
+  "test-co":        {titulo:"Test — Comprensión oral (Marta, Erasmus+)", tipo:"audio",
+                     url:"co_tle_test.mp3"},
+  "v-empresa":      {titulo:"Vídeo — Inditex, una empresa real",
+                     url:"https://www.youtube.com/shorts/lOe_RGPr5nM"},
+  "v-acogida":      {titulo:"Vídeo — Protocolo de atención al cliente",
+                     url:"https://www.youtube.com/watch?v=M0WqQBa3sRI"},
+  "v-reclamacion":  {titulo:"Vídeo — Cómo gestionar una reclamación",
+                     url:"https://www.youtube.com/watch?v=_gwKLHUouXo"},
+  "v-comunicacion": {titulo:"Vídeo — Comunicación profesional (español de los negocios)",
+                     url:"https://www.youtube.com/watch?v=7sDwuuSptIA"},
+  "c-trabajo":      {titulo:"Canción — Mientras no cueste trabajo (Melendi)",
+                     url:"https://www.youtube.com/watch?v=NHw6AdQ8TfU"},
+  "c-cliente":      {titulo:"Canción — Color Esperanza (Diego Torres)",
+                     url:"https://www.youtube.com/watch?v=Nb1VOQRs-Vs"},
+  "c-reunion":      {titulo:"Canción — Gente de buena voluntad",
+                     url:"https://www.youtube.com/results?search_query=Los+Secretos+Gente+de+buena+voluntad"},
+  "corto-abogada":  {titulo:"Cortometraje — Una buena abogada",
+                     url:"https://www.youtube.com/watch?v=KdMqRd8wNPM"},
+  "corto-existo":   {titulo:"Cortometraje — Existo",
+                     url:"https://www.youtube.com/watch?v=R75ZQzP54QY"},
+  "corto-ruleta":   {titulo:"Cortometraje — Ruleta",
+                     url:"https://www.youtube.com/watch?v=qlkLkvGxr0M"},
+  "corto-fuera":    {titulo:"Cortometraje — Estoy fuera",
+                     url:"https://www.youtube.com/watch?v=pHc_Q_lJQlQ"},
+  /* --- Cortometrajes de 1re : pour l'instant, une recherche YouTube.
+         Pour mettre le lien exact du film, remplace l'adresse url:"..." --- */
+  "c1-gritones": {titulo:"Cortometraje — Los gritones",
+                   url:"https://www.youtube.com/results?search_query=Los+gritones+cortometraje+Roberto+P%C3%A9rez+Toledo"},
+  "c1-senales": {titulo:"Cortometraje — Señales (Signs)",
+                   url:"https://www.youtube.com/results?search_query=Signs+cortometraje+Patrick+Hughes+subtitulado+espa%C3%B1ol"},
+  "c1-735manana": {titulo:"Cortometraje — 7:35 de la mañana",
+                   url:"https://www.youtube.com/results?search_query=7%3A35+de+la+ma%C3%B1ana+Nacho+Vigalondo"},
+  "c1-paperman": {titulo:"Cortometraje — Paperman",
+                   url:"https://www.youtube.com/results?search_query=Paperman+Disney+cortometraje"},
+  "c1-alma": {titulo:"Cortometraje — Alma",
+                   url:"https://www.youtube.com/results?search_query=Alma+cortometraje+Rodrigo+Blaas"},
+  "c1-desconocidos": {titulo:"Cortometraje — Desconocidos",
+                   url:"https://www.youtube.com/results?search_query=Desconocidos+cortometraje+David+del+%C3%81guila"},
+  "c1-mrbean": {titulo:"Cortometraje — Mr. Bean — Nap time",
+                   url:"https://www.youtube.com/results?search_query=Mr+Bean+se+levanta+tarde"},
+  "c1-despertador": {titulo:"Cortometraje — El despertador (Alarm)",
+                   url:"https://www.youtube.com/results?search_query=Alarm+short+film+Jae-il+Jung"},
+  "c1-ascorazones": {titulo:"Cortometraje — As de corazones",
+                   url:"https://www.youtube.com/results?search_query=As+de+corazones+cortometraje"},
+  "c1-diezminutos": {titulo:"Cortometraje — Diez minutos",
+                   url:"https://www.youtube.com/results?search_query=Diez+minutos+cortometraje+Alberto+Ruiz+Rojo"},
+  "c1-sinceridad": {titulo:"Cortometraje — Sinceridad",
+                   url:"https://www.youtube.com/results?search_query=Sinceridad+cortometraje"},
+  "c1-5segundos": {titulo:"Cortometraje — 5 segundos",
+                   url:"https://www.youtube.com/results?search_query=5+segundos+cortometraje"},
+  "c1-jinxy": {titulo:"Cortometraje — Jinxy Jenkins & Lucky Lou",
+                   url:"https://www.youtube.com/results?search_query=Jinxy+Jenkins+Lucky+Lou"},
+  "c1-columpio": {titulo:"Cortometraje — El columpio",
+                   url:"https://www.youtube.com/results?search_query=El+columpio+cortometraje+%C3%81lvaro+Fern%C3%A1ndez+Armero"},
+  "c1-postit": {titulo:"Cortometraje — Post-it Love",
+                   url:"https://www.youtube.com/results?search_query=Post-it+Love+short+film"},
+  "c1-elnumero": {titulo:"Cortometraje — El número",
+                   url:"https://www.youtube.com/results?search_query=El+n%C3%BAmero+cortometraje+Marco+Besas"},
+  "c1-anamanuel": {titulo:"Cortometraje — Ana y Manuel",
+                   url:"https://www.youtube.com/results?search_query=Ana+y+Manuel+cortometraje"},
+  "c1-kas": {titulo:"Cortometraje — El último deseo de Marcos (KAS)",
+                   url:"https://www.youtube.com/results?search_query=anuncio+KAS+el+%C3%BAltimo+deseo+de+Marcos"},
+  "c1-said": {titulo:"Cortometraje — El viaje de Said",
+                   url:"https://www.youtube.com/results?search_query=El+viaje+de+Said+cortometraje+Coke+Riob%C3%B3o"},
+  "c1-hiyab": {titulo:"Cortometraje — Hiyab",
+                   url:"https://www.youtube.com/results?search_query=Hiyab+cortometraje+Xavi+Sala"},
+  "c1-indiferente": {titulo:"Cortometraje — El señor indiferente",
+                   url:"https://www.youtube.com/results?search_query=Corto+animado+Sr.+Indiferente"},
+  "c1-horoscopo": {titulo:"Cortometraje — El horóscopo",
+                   url:"https://www.youtube.com/results?search_query=El+hor%C3%B3scopo+cortometraje"},
+  "c1-ninosenvueltos": {titulo:"Cortometraje — Niños envueltos",
+                   url:"https://www.youtube.com/results?search_query=Ni%C3%B1os+envueltos+Mario+Vi%C3%B1uela"},
+  "c1-tortilla": {titulo:"Cortometraje — La vuelta a la tortilla",
+                   url:"https://www.youtube.com/results?search_query=La+vuelta+a+la+tortilla+cortometraje"},
+  "c1-amiga": {titulo:"Cortometraje — ¿Quieres ser mi amiga?",
+                   url:"https://www.youtube.com/results?search_query=%C2%BFQuieres+ser+mi+amiga%3F+cortometraje"},
+  "c1-piso": {titulo:"Cortometraje — Todo exterior",
+                   url:"https://www.youtube.com/results?search_query=Todo+exterior+cortometraje"},
+  "c1-drogas1": {titulo:"Cortometraje — Campaña contra las drogas — Spot 1",
+                   url:"https://www.youtube.com/results?search_query=Campa%C3%B1a+contra+el+consumo+de+drogas+anuncio"},
+  "c1-drogas2": {titulo:"Cortometraje — Campaña contra las drogas — Spot 2",
+                   url:"https://www.youtube.com/results?search_query=Campa%C3%B1a+contra+el+consumo+de+drogas+2+anuncio"},
+  "c1-drogas3": {titulo:"Cortometraje — Campaña contra las drogas — Spot 3",
+                   url:"https://www.youtube.com/results?search_query=v%C3%ADdeo+DGT+drogas+al+volante+anuncio"},
+  "c1-ikea": {titulo:"Cortometraje — Familiarizados (IKEA)",
+                   url:"https://www.youtube.com/results?search_query=Anuncio+IKEA+Navidad+2018+Familiarizados"},
+  "c1-allegro": {titulo:"Cortometraje — Inglés para principiantes (Allegro)",
+                   url:"https://www.youtube.com/results?search_query=Allegro+English+for+beginners+Christmas"},
+  "c1-cuerdas2": {titulo:"Cortometraje — Cuerdas",
+                   url:"https://www.youtube.com/results?search_query=Cuerdas+cortometraje+Pedro+Sol%C3%ADs"}
+};
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function mostrar(){
+  const app = document.getElementById('app');
+  const clave = decodeURIComponent((location.hash||'').slice(1));
+  const m = MEDIOS[clave];
+  if(m && m.tipo === 'audio'){
+    app.innerHTML = `<h1>${esc(m.titulo)}</h1>
+      <div class="tarjeta"><p>Pulsa ▶ para escuchar. Puedes escucharlo varias veces.</p>
+      <audio controls preload="metadata" src="${esc(m.url)}"></audio>
+      <a class="boton" href="${esc(m.url)}">Abrir el audio</a></div>`;
+    return;
+  }
+  if(m){
+    app.innerHTML = `<h1>${esc(m.titulo)}</h1>
+      <div class="tarjeta"><p>Abriendo el vídeo…</p>
+      <a class="boton" href="${esc(m.url)}">Ver el vídeo</a>
+      <p class="nota">Si no se abre solo, pulsa el botón.</p></div>`;
+    setTimeout(()=>{ location.replace(m.url); }, 400);
+    return;
+  }
+  app.innerHTML = `<h1>Livret Terminale — Medios</h1>
+    <div class="tarjeta"><ul>${Object.entries(MEDIOS).map(([k,v])=>
+      `<li><a href="#${esc(k)}">${esc(v.titulo)}</a></li>`).join('')}</ul></div>`;
+}
+window.addEventListener('hashchange', mostrar);
+mostrar();
+</script>
+</body>
+</html>
