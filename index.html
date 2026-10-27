@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Livret Terminale — Medios</title>
+<style>
+  :root{--fondo:#F7F4EE;--texto:#1F2A24;--verde:#2E6B4F;--borde:#E3DCD2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fondo);color:var(--texto)}
+  main{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:1.3rem;margin:0 0 4px}
+  p{line-height:1.5}
+  .tarjeta{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:16px;margin:12px 0}
+  .boton{display:block;text-align:center;background:var(--verde);color:#fff;text-decoration:none;
+         font-weight:700;padding:14px;border-radius:10px;margin-top:12px}
+  audio{width:100%;margin-top:12px}
+  ul{padding-left:18px} li{margin:6px 0}
+  a{color:var(--verde)}
+  .nota{font-size:.85rem;color:#5A6A61}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+/* ============================================================
+   LISTE DES MÉDIAS DU LIVRET TERMINALE
+   Pour changer un lien : remplace seulement l'adresse entre
+   guillemets après  url:  puis enregistre (« Commit changes »).
+   Les QR codes imprimés n'ont PAS besoin d'être refaits.
+   ============================================================ */
+const MEDIOS = {
+  "test-co":        {titulo:"Test — Comprensión oral (Marta, Erasmus+)", tipo:"audio",
+                     url:"co_tle_test.mp3"},
+  "v-empresa":      {titulo:"Vídeo — Inditex, una empresa real",
+                     url:"https://www.youtube.com/results?search_query=Inditex+Arteixo+sede+reportaje"},
+  "v-acogida":      {titulo:"Vídeo — Protocolo de atención al cliente",
+                     url:"https://www.youtube.com/results?search_query=protocolo+de+atenci%C3%B3n+al+cliente"},
+  "v-reclamacion":  {titulo:"Vídeo — Cómo gestionar una reclamación",
+                     url:"https://www.youtube.com/results?search_query=tipos+de+cliente+queja+reclamaci%C3%B3n+atenci%C3%B3n+al+cliente"},
+  "v-comunicacion": {titulo:"Vídeo — Comunicación profesional (español de los negocios)",
+                     url:"https://www.youtube.com/results?search_query=Spanish+with+Vicente+espa%C3%B1ol+para+los+negocios"},
+  "c-trabajo":      {titulo:"Canción — Melendi",
+                     url:"https://www.youtube.com/results?search_query=Melendi+Mientras+no+cueste+trabajo"},
+  "c-cliente":      {titulo:"Canción — Color Esperanza (Diego Torres)",
+                     url:"https://www.youtube.com/results?search_query=Diego+Torres+Color+Esperanza"},
+  "c-reunion":      {titulo:"Canción — Gente de buena voluntad",
+                     url:"https://www.youtube.com/results?search_query=Los+Secretos+Gente+de+buena+voluntad"},
+  "corto-abogada":  {titulo:"Cortometraje — Una buena abogada",
+                     url:"https://www.youtube.com/results?search_query=cortometraje+Una+buena+abogada"},
+  "corto-existo":   {titulo:"Cortometraje — Existo",
+                     url:"https://www.youtube.com/results?search_query=cortometraje+Existo"},
+  "corto-ruleta":   {titulo:"Cortometraje — Ruleta",
+                     url:"https://www.youtube.com/results?search_query=cortometraje+Ruleta"},
+  "corto-fuera":    {titulo:"Cortometraje — Estoy fuera",
+                     url:"https://www.youtube.com/results?search_query=cortometraje+Estoy+fuera"}
+};
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function mostrar(){
+  const app = document.getElementById('app');
+  const clave = decodeURIComponent((location.hash||'').slice(1));
+  const m = MEDIOS[clave];
+  if(m && m.tipo === 'audio'){
+    app.innerHTML = `<h1>${esc(m.titulo)}</h1>
+      <div class="tarjeta"><p>Pulsa ▶ para escuchar. Puedes escucharlo varias veces.</p>
+      <audio controls preload="metadata" src="${esc(m.url)}"></audio>
+      <a class="boton" href="${esc(m.url)}">Abrir el audio</a></div>`;
+    return;
+  }
+  if(m){
+    app.innerHTML = `<h1>${esc(m.titulo)}</h1>
+      <div class="tarjeta"><p>Abriendo el vídeo…</p>
+      <a class="boton" href="${esc(m.url)}">Ver el vídeo</a>
+      <p class="nota">Si no se abre solo, pulsa el botón.</p></div>`;
+    setTimeout(()=>{ location.replace(m.url); }, 400);
+    return;
+  }
+  app.innerHTML = `<h1>Livret Terminale — Medios</h1>
+    <div class="tarjeta"><ul>${Object.entries(MEDIOS).map(([k,v])=>
+      `<li><a href="#${esc(k)}">${esc(v.titulo)}</a></li>`).join('')}</ul></div>`;
+}
+window.addEventListener('hashchange', mostrar);
+mostrar();
+</script>
+</body>
+</html>
