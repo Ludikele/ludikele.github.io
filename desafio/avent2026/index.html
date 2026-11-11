@@ -13136,6 +13136,31 @@ function elegirNivel() {
   document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { ST.nivel = b.dataset.n; guardar(); if ($('#pn')) $('#pn').value = ST.nivel; inicio(); });
 }
 
+let PINATA_COUPS = 0;
+function pinataBravo() {
+  return '<div class="bravo" style="position:relative;z-index:2;text-align:center;font-size:20pt;font-weight:bold;color:#c62828;margin-top:8px">¡Bravo, detective !<small style="display:block;font-size:13px;color:#333;font-weight:normal">Tu as résolu les ' + SC.dias + ' enquêtes · ¡Felicidades!<br>Envoie tes coffres à EspaBox (Wi-Fi du lycée) : +100 XP bonus</small></div>';
+}
+function romperPinata() {
+  PINATA_COUPS++;
+  const b = $('#pinata'); if (!b) return;
+  b.style.transform = 'rotate(' + (PINATA_COUPS % 2 ? -14 : 14) + 'deg) scale(' + (1 + PINATA_COUPS * 0.08) + ')';
+  if (PINATA_COUPS < 3) return;
+  b.style.display = 'none';
+  const z = $('#pz'); if (!z) return;
+  const cols = ['#e53935', '#fdd835', '#43a047', '#1e88e5', '#8e24aa', '#fb8c00'];
+  let html = '';
+  for (let i = 0; i < 80; i++) html += '<i class="conf" style="left:' + (Math.random() * 100).toFixed(1) + '%;background:' + cols[i % cols.length] + ';animation-delay:' + (Math.random() * 0.6).toFixed(2) + 's;animation-duration:' + (1.8 + Math.random() * 1.6).toFixed(2) + 's"></i>';
+  z.insertAdjacentHTML('beforeend', '<div class="confetis">' + html + '</div>' + pinataBravo());
+  ST.pinata = true; guardar();
+}
+function pinataHTML(complet) {
+  if (!complet) return '';
+  const style = '<style>.conf{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:confetti linear forwards}@keyframes confetti{to{transform:translateY(260px) rotate(720deg);opacity:0}}.confetis{position:absolute;inset:0;pointer-events:none;overflow:hidden}</style>';
+  if (ST.pinata) return '<div id="pz" style="position:relative;overflow:hidden;text-align:center;margin:10px 0;min-height:120px">' + style + pinataBravo() + '</div>';
+  return '<div id="pz" style="position:relative;overflow:hidden;text-align:center;margin:10px 0;min-height:150px">' + style +
+    '<button id="pinata" type="button" style="font-size:64px;background:none;border:0;cursor:pointer;transition:transform .15s">🪅</button>' +
+    '<p class="es" style="margin:2px 0 0">Casse la piñata ! · ¡Rompe la piñata!</p></div>';
+}
 function inicio() {
   stopMec(); window.scrollTo(0, 0);
   const s = stats();
@@ -13147,6 +13172,7 @@ function inicio() {
     <div class="stat"><b>🎟️${SC.loteria ? s.ok : '—'}</b><small>Décimos</small></div>
     <div class="stat"><b>${s.nota == null ? '—' : fmt(s.nota)}</b><small>Note /20<br>${ST.token ? 'Nota' : 'EspaBox'}</small></div></div>`;
   if (SC.frase) h += `<div class="frase">${esc(fraseVista())}<small>Phrase mystère · Frase misteriosa</small></div>`;
+  h += pinataHTML(s.ok === SC.dias);
   h += '<div class="grid">';
   for (let n = 1; n <= SC.dias; n++) {
     const c = caso(n), d = fechaCaso(n), ok = ST.casos[n] && ST.casos[n].ok;
@@ -13165,6 +13191,7 @@ function inicio() {
   if (ST.token && SC.espabox_url && !PROF) h += `<button class="btn" id="benv">📤 Envoyer à EspaBox<span class="es">Enviar a EspaBox</span></button>`;
   if (!PROF) h += `<button class="btn sec" id="bniv">⚙️ Changer de niveau<span class="es">Cambiar de nivel</span></button>`;
   $('#app').innerHTML = h;
+  if ($('#pinata')) $('#pinata').onclick = romperPinata;
   document.querySelectorAll('.door').forEach(b => b.onclick = () => {
     const n = +b.dataset.d;
     if (!abierto(n)) return msg('Ce coffre s\'ouvre le ' + fechaCaso(n).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) + '.', 'ko');
