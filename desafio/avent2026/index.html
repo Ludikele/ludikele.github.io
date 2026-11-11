@@ -13,7 +13,7 @@ header img{width:40px;height:40px;object-fit:contain}
 header h1{font-size:1.05rem;margin:0;flex:1;line-height:1.2}
 header .who{font-size:.75rem;color:var(--mut)}
 .es{display:block;font-size:.78em;opacity:.8;font-weight:400;font-style:italic}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
 .stat{background:var(--panel);border-radius:var(--r);padding:8px 4px;text-align:center}
 .stat b{display:block;font-size:1.25rem;color:var(--acc)}
 .stat small{color:var(--mut);font-size:.7rem;line-height:1.2;display:block}
@@ -79,7 +79,6 @@ input[type=range]{width:100%;margin-top:10px}
 .tag{display:inline-block;background:var(--bg);color:var(--mut);border-radius:20px;padding:2px 10px;font-size:.75rem;margin-right:6px}
 .reward{text-align:center}
 .reward img{width:120px}
-.decimo{display:inline-block;background:#fdf6e3;color:#7a1f1f;border:2px dashed #7a1f1f;border-radius:8px;padding:6px 14px;font-family:ui-monospace,monospace;font-size:1.3rem;font-weight:800;margin:4px}
 .prof{background:#5b2a86;color:#fff;font-size:.8rem;padding:6px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .prof input,.prof select{padding:3px;border-radius:6px;border:0}
 .sol{background:#5b2a86;color:#fff;border-radius:10px;padding:8px;margin-top:10px;font-size:.8rem;word-break:break-word}
@@ -125,7 +124,7 @@ textarea.libre{width:100%;min-height:90px;padding:10px;border-radius:12px;border
 .metodo .pas p{margin:4px 0 0;color:var(--txt)}
 .metodo .phrase{text-align:center;font-family:Georgia,serif;font-size:1.15rem;margin:16px 6px;line-height:1.5}
 .hidden{display:none!important}
-@media (max-width:380px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:380px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}}
 
 body{background:var(--bg);color:var(--txt)}
 </style>
@@ -157,7 +156,7 @@ body{background:var(--bg);color:var(--txt)}
   "locked": "#14302a"
  },
  "frase": "FELIZ NAVIDAD Y PROSPERO AÑO",
- "loteria": true,
+ "loteria": false,
  "nota": {
   "paliers": [
    [
@@ -10185,7 +10184,7 @@ body{background:var(--bg);color:var(--txt)}
    "pistas": [
     "Repasa el tablero y tus cofres abiertos."
    ],
-   "recompensa": "¡Te has comido las 12 uvas! Hoy es el sorteo de la Lotería del lycée: ¡prepara tus décimos!"
+   "recompensa": "¡Te has comido las 12 uvas! ¡Mucha suerte para el año nuevo, detective!"
   },
   {
    "dia": 19,
@@ -13512,7 +13511,6 @@ function nota(ok, best) {
   return Math.min(20, b + c);
 }
 const fmt = x => String(Math.round(x * 10) / 10).replace('.', ',');
-function decimo(n) { return String(parseInt(fnv(uid() + '|' + SC.id + '|' + n), 16) % 100000).padStart(5, '0'); }
 function fraseVista() {
   const f = SC.frase || ''; const idx = [];
   for (let i = 0; i < f.length; i++) if (/\S/.test(f[i])) idx.push(i);
@@ -13602,7 +13600,6 @@ function inicio() {
   h += `<div class="stats">
     <div class="stat"><b>${s.ok}/${SC.dias}</b><small>Coffres<br>Cofres</small></div>
     <div class="stat"><b>🔥${s.best}</b><small>Meilleure série<br>Racha</small></div>
-    <div class="stat"><b>🎟️${SC.loteria ? s.ok : '—'}</b><small>Décimos</small></div>
     <div class="stat"><b>${s.nota == null ? '—' : fmt(s.nota)}</b><small>Note /20<br>${ST.token ? 'Nota' : 'EspaBox'}</small></div></div>`;
   if (SC.frase) h += `<div class="frase">${esc(fraseVista())}<small>Phrase mystère · Frase misteriosa</small></div>`;
   h += pinataHTML(s.ok === SC.dias);
@@ -13620,7 +13617,6 @@ function inicio() {
   h += `<button class="btn sec" id="bmet2">🔍 La méthode du détective<span class="es">El método</span></button>`;
   h += `<button class="btn sec" id="bsus">🕵️ Tableau des suspects<span class="es">Sospechosos</span></button>`;
   if ((SC.casos || []).some(c => c.tipo === 'investigacion')) h += `<button class="btn sec" id="bcar">📓 Mon carnet d'enquêteur<span class="es">Mi cuaderno de detective</span></button>`;
-  if (SC.loteria) h += `<button class="btn sec" id="bdec">🎟️ Mes décimos<span class="es">Mis décimos</span></button>`;
   if (ST.token && SC.espabox_url && !PROF) h += `<button class="btn" id="benv">📤 Envoyer à EspaBox<span class="es">Enviar a EspaBox</span></button>`;
   if (!PROF) h += `<button class="btn sec" id="bniv">⚙️ Changer de niveau<span class="es">Cambiar de nivel</span></button>`;
   $('#app').innerHTML = h;
@@ -13633,7 +13629,6 @@ function inicio() {
   });
   $('#bsus').onclick = tablero;
   $('#bmet2').onclick = vistaMetodo;
-  if ($('#bdec')) $('#bdec').onclick = vistaDecimos;
   if ($('#bcar')) $('#bcar').onclick = vistaCarnet;
   if ($('#benv')) $('#benv').onclick = vistaEnviar;
   if ($('#bniv')) $('#bniv').onclick = elegirNivel;
@@ -13691,7 +13686,6 @@ function exito(n, c, pis) {
     `<h2>Coffre ouvert !<span class="es">¡Cofre abierto!</span></h2>`;
   if (c.recompensa) h += `<p>${esc(L(c.recompensa))}</p>`;
   if (sus) h += `<p>🕵️ ${esc(sus.emoji)} ${esc(sus.nombre)} : inocente ❌</p>`;
-  if (SC.loteria) h += `<p>Ton décimo · Tu décimo<br><span class="decimo">🎟️ ${decimo(n)}</span></p>`;
   if (ST.reglas[n]) h += `<p class="regla" style="background:#ffffff14;border-radius:8px;padding:6px">🔎 ${esc(ST.reglas[n])}</p>`;
   if (ST.carnet[n]) h += `<p>📓 Dans ton carnet · En tu cuaderno :<br><i>${esc(ST.carnet[n])}</i></p>`;
   if (pis > 1) h += `<p class="es">${pis} pistas usadas : sin bonus de cofre perfecto.</p>`;
@@ -13728,14 +13722,6 @@ function vistaCarnet() {
   $('#app').innerHTML = h; $('#bvol').onclick = inicio;
 }
 
-function vistaDecimos() {
-  stopMec(); window.scrollTo(0, 0);
-  const ns = Object.keys(ST.casos).filter(d => ST.casos[d].ok).map(Number).sort((a, b) => a - b);
-  let h = pacoHTML('Un coffre ouvert = un décimo. Tirage au sort de la Lotería le dernier jour de cours !', 'Sorteo de la Lotería el último día de clase.') + '<div class="card" style="text-align:center">';
-  h += ns.length ? ns.map(d => `<span class="decimo">${decimo(d)}</span>`).join('') : '<p>Pas encore de décimo · Todavía no tienes décimos.</p>';
-  h += `</div><button class="btn sec" id="bvol">← Retour<span class="es">Volver</span></button>`;
-  $('#app').innerHTML = h; $('#bvol').onclick = inicio;
-}
 
 function vistaEnviar() {
   stopMec(); window.scrollTo(0, 0);
