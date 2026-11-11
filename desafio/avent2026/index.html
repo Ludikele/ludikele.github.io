@@ -135,8 +135,7 @@ body{background:var(--bg);color:var(--txt)}
 <main class="wrap" id="app"><p style="text-align:center;margin-top:40px">⏳</p></main>
 
 <!-- ===== SCÉNARIO (remplaçable : ?s=fichier.json) ===== -->
-<script type="application/json" id="escenario">
-{
+<script type="application/json" id="escenario">{
  "id": "avent2026",
  "version": 6,
  "titulo": "El Gordo desaparecido",
@@ -875,20 +874,165 @@ body{background:var(--bg);color:var(--txt)}
    "dia": 2,
    "pais": "El lycée",
    "bandera": "🏫",
-   "tipo": "terreno",
-   "clave": "TURRON",
-   "titulo": "Un QR cerca del CDI",
-   "historia": "El ladrón pasó por nuestro lycée antes de huir. Dejó un código escondido.",
+   "tipo": "ecoute",
+   "titulo": "El número escondido",
+   "historia": "Un ladrón anotó números secretos en una nota del CDI. Escúchalos para descubrir la cifra clave.",
    "consigna": {
-    "fr": "Trouve le QR caché dans le lycée et scanne-le (ou tape le code écrit dessous).",
-    "es": "Busca el QR escondido en el lycée."
+    "fr": "Écoute (bouton 🔊), puis choisis ou tape la bonne réponse. Réussis 2 réponses sur 3 pour ouvrir le coffre.",
+    "es": "Escucha y elige o escribe la respuesta. Acierta 2 de 3 para abrir el cofre."
    },
-   "enunciado": "Busca el QR escondido cerca del CDI. Escanéalo o escribe el código que está debajo.",
+   "enunciado": "Escucha cada número. Elige la respuesta correcta o escríbela en cifras.",
    "pistas": [
-    "Mira cerca de la puerta del CDI.",
-    "El código tiene 6 letras."
+    "Escucha con atención las decenas.",
+    "Cuidado con los números que se parecen."
    ],
-   "recompensa": "Una cámara del lycée vio una sombra con un delantal… y un billete de avión a México."
+   "recompensa": "Una cámara del lycée vio una sombra con un delantal… y un billete de avión a México.",
+   "ecoute": {
+    "1": [
+     {
+      "t": "siete",
+      "o": [
+       "7",
+       "17",
+       "70"
+      ],
+      "c": 0
+     },
+     {
+      "t": "cuatro",
+      "o": [
+       "14",
+       "40",
+       "4"
+      ],
+      "c": 2
+     },
+     {
+      "t": "nueve",
+      "o": [
+       "9",
+       "6",
+       "90"
+      ],
+      "c": 0
+     }
+    ],
+    "2": [
+     {
+      "t": "veintitrés",
+      "o": [
+       "32",
+       "23",
+       "33"
+      ],
+      "c": 1
+     },
+     {
+      "t": "dieciocho",
+      "o": [
+       "81",
+       "18",
+       "80"
+      ],
+      "c": 1
+     },
+     {
+      "t": "veintiocho",
+      "o": [
+       "28",
+       "82",
+       "26"
+      ],
+      "c": 0
+     }
+    ],
+    "3": [
+     {
+      "t": "cincuenta y seis",
+      "o": [
+       "65",
+       "56",
+       "50"
+      ],
+      "c": 1
+     },
+     {
+      "t": "setenta y tres",
+      "o": [
+       "37",
+       "73",
+       "70"
+      ],
+      "c": 1
+     },
+     {
+      "t": "noventa y ocho",
+      "o": [
+       "98",
+       "89",
+       "90"
+      ],
+      "c": 0
+     }
+    ],
+    "4": [
+     {
+      "t": "ciento veinte",
+      "r": "120"
+     },
+     {
+      "t": "trescientos cuarenta y cinco",
+      "r": "345"
+     },
+     {
+      "t": "novecientos",
+      "r": "900"
+     }
+    ],
+    "5": [
+     {
+      "t": "son las tres y cuarto",
+      "o": [
+       "3:45",
+       "15:03",
+       "3:15"
+      ],
+      "c": 2
+     },
+     {
+      "t": "dos mil veintiséis",
+      "o": [
+       "2062",
+       "2026",
+       "2016"
+      ],
+      "c": 1
+     },
+     {
+      "t": "son las siete menos cuarto",
+      "o": [
+       "7:15",
+       "6:45",
+       "7:45"
+      ],
+      "c": 1
+     }
+    ],
+    "6": [
+     {
+      "t": "mil doscientos treinta y cuatro",
+      "r": "1234"
+     },
+     {
+      "t": "dos mil quinientos",
+      "r": "2500"
+     },
+     {
+      "t": "ochocientos ochenta y ocho",
+      "r": "888"
+     }
+    ]
+   }
   },
   {
    "dia": 3,
@@ -4916,20 +5060,165 @@ body{background:var(--bg);color:var(--txt)}
    "dia": 9,
    "pais": "El lycée",
    "bandera": "🏫",
-   "tipo": "terreno",
-   "clave": "BELEN",
-   "titulo": "Un QR cerca de la cantina",
-   "historia": "¡La sombra ha vuelto al lycée! Esta vez dejó un código cerca de la cantina.",
+   "tipo": "ecoute",
+   "titulo": "Al mercado",
+   "historia": "Un vendedor del mercado vio pasar a la sombra. Escucha sus precios para descubrir qué compró.",
    "consigna": {
-    "fr": "Trouve le QR caché dans le lycée et scanne-le (ou tape le code écrit dessous).",
-    "es": "Busca el QR escondido en el lycée."
+    "fr": "Écoute (bouton 🔊), puis choisis ou tape la bonne réponse. Réussis 2 réponses sur 3 pour ouvrir le coffre.",
+    "es": "Escucha y elige o escribe la respuesta. Acierta 2 de 3 para abrir el cofre."
    },
-   "enunciado": "Busca el QR escondido cerca de la cantina. Escanéalo o escribe el código que está debajo.",
+   "enunciado": "Escucha cada precio. Elige la respuesta correcta o escríbela en cifras (ejemplo: 2,50).",
    "pistas": [
-    "Mira cerca de la entrada de la cantina.",
-    "El código tiene 5 letras."
+    "Escucha el precio completo.",
+    "Atención a los céntimos en el nivel 6."
    ],
-   "recompensa": "En la cantina, la sombra pidió… ¡un chocolate caliente! Próxima parada: Perú."
+   "recompensa": "En la cantina, la sombra pidió… ¡un chocolate caliente! Próxima parada: Perú.",
+   "ecoute": {
+    "1": [
+     {
+      "t": "dos euros",
+      "o": [
+       "2 €",
+       "12 €",
+       "20 €"
+      ],
+      "c": 0
+     },
+     {
+      "t": "cinco euros",
+      "o": [
+       "15 €",
+       "50 €",
+       "5 €"
+      ],
+      "c": 2
+     },
+     {
+      "t": "diez euros",
+      "o": [
+       "16 €",
+       "10 €",
+       "60 €"
+      ],
+      "c": 1
+     }
+    ],
+    "2": [
+     {
+      "t": "veinte euros",
+      "o": [
+       "20 €",
+       "2 €",
+       "30 €"
+      ],
+      "c": 0
+     },
+     {
+      "t": "veintiocho euros",
+      "o": [
+       "18 €",
+       "82 €",
+       "28 €"
+      ],
+      "c": 2
+     },
+     {
+      "t": "treinta euros",
+      "o": [
+       "13 €",
+       "33 €",
+       "30 €"
+      ],
+      "c": 2
+     }
+    ],
+    "3": [
+     {
+      "t": "cincuenta euros",
+      "o": [
+       "50 €",
+       "15 €",
+       "55 €"
+      ],
+      "c": 0
+     },
+     {
+      "t": "setenta y dos euros",
+      "o": [
+       "27 €",
+       "72 €",
+       "70 €"
+      ],
+      "c": 1
+     },
+     {
+      "t": "noventa y nueve euros",
+      "o": [
+       "90 €",
+       "96 €",
+       "99 €"
+      ],
+      "c": 2
+     }
+    ],
+    "4": [
+     {
+      "t": "cuatrocientos euros",
+      "r": "400"
+     },
+     {
+      "t": "trescientos cincuenta y dos euros",
+      "r": "352"
+     },
+     {
+      "t": "novecientos ochenta euros",
+      "r": "980"
+     }
+    ],
+    "5": [
+     {
+      "t": "quinientos veinte euros",
+      "o": [
+       "520 €",
+       "250 €",
+       "502 €"
+      ],
+      "c": 0
+     },
+     {
+      "t": "mil euros",
+      "o": [
+       "100 €",
+       "10 €",
+       "1000 €"
+      ],
+      "c": 2
+     },
+     {
+      "t": "mil quinientos euros",
+      "o": [
+       "1050 €",
+       "1500 €",
+       "5100 €"
+      ],
+      "c": 1
+     }
+    ],
+    "6": [
+     {
+      "t": "dos euros con cincuenta",
+      "r": "2,50"
+     },
+     {
+      "t": "tres euros con veinte",
+      "r": "3,20"
+     },
+     {
+      "t": "diez euros con cinco céntimos",
+      "r": "10,05"
+     }
+    ]
+   }
   },
   {
    "dia": 10,
@@ -8270,20 +8559,165 @@ body{background:var(--bg);color:var(--txt)}
    "dia": 15,
    "pais": "El lycée",
    "bandera": "🏫",
-   "tipo": "terreno",
-   "clave": "GORDO",
-   "titulo": "Un QR en la vie scolaire",
-   "historia": "Último paso de la sombra por el lycée: un código cerca de la vie scolaire.",
+   "tipo": "ecoute",
+   "titulo": "El número secreto",
+   "historia": "La sombra dejó un número de teléfono en la vie scolaire. Escúchalo bien y anótalo.",
    "consigna": {
-    "fr": "Trouve le QR caché dans le lycée et scanne-le (ou tape le code écrit dessous).",
-    "es": "Busca el QR escondido en el lycée."
+    "fr": "Écoute (bouton 🔊), puis choisis ou tape la bonne réponse. Réussis 2 réponses sur 3 pour ouvrir le coffre.",
+    "es": "Escucha y elige o escribe la respuesta. Acierta 2 de 3 para abrir el cofre."
    },
-   "enunciado": "Busca el QR escondido cerca de la vie scolaire. Escanéalo o escribe el código que está debajo.",
+   "enunciado": "Escucha cada número. Elige la respuesta correcta o escríbela en cifras.",
    "pistas": [
-    "Mira cerca de la puerta de la vie scolaire.",
-    "El código tiene 5 letras."
+    "Escucha los números uno por uno.",
+    "Cuidado con los números que se parecen."
    ],
-   "recompensa": "Una nota en el suelo: «Nos vemos en Bogotá para la novena»."
+   "recompensa": "Una nota en el suelo: «Nos vemos en Bogotá para la novena».",
+   "ecoute": {
+    "1": [
+     {
+      "t": "tres",
+      "o": [
+       "13",
+       "3",
+       "30"
+      ],
+      "c": 1
+     },
+     {
+      "t": "ocho",
+      "o": [
+       "8",
+       "18",
+       "80"
+      ],
+      "c": 0
+     },
+     {
+      "t": "cinco",
+      "o": [
+       "50",
+       "15",
+       "5"
+      ],
+      "c": 2
+     }
+    ],
+    "2": [
+     {
+      "t": "veinticinco",
+      "o": [
+       "52",
+       "25",
+       "15"
+      ],
+      "c": 1
+     },
+     {
+      "t": "dieciséis",
+      "o": [
+       "61",
+       "16",
+       "6"
+      ],
+      "c": 1
+     },
+     {
+      "t": "veintinueve",
+      "o": [
+       "92",
+       "29",
+       "19"
+      ],
+      "c": 1
+     }
+    ],
+    "3": [
+     {
+      "t": "cuarenta y uno",
+      "o": [
+       "14",
+       "41",
+       "40"
+      ],
+      "c": 1
+     },
+     {
+      "t": "sesenta y ocho",
+      "o": [
+       "86",
+       "68",
+       "60"
+      ],
+      "c": 1
+     },
+     {
+      "t": "ochenta y cuatro",
+      "o": [
+       "48",
+       "84",
+       "80"
+      ],
+      "c": 1
+     }
+    ],
+    "4": [
+     {
+      "t": "mil",
+      "r": "1000"
+     },
+     {
+      "t": "dos mil quince",
+      "r": "2015"
+     },
+     {
+      "t": "quinientos noventa",
+      "r": "590"
+     }
+    ],
+    "5": [
+     {
+      "t": "son las cinco y media",
+      "o": [
+       "5:15",
+       "5:30",
+       "6:30"
+      ],
+      "c": 1
+     },
+     {
+      "t": "el veinticuatro de diciembre",
+      "o": [
+       "12/24",
+       "24/12",
+       "21/04"
+      ],
+      "c": 1
+     },
+     {
+      "t": "son las nueve menos diez",
+      "o": [
+       "9:10",
+       "8:50",
+       "9:50"
+      ],
+      "c": 1
+     }
+    ],
+    "6": [
+     {
+      "t": "cero seis, veintiuno, treinta y cuatro, cincuenta",
+      "r": "06 21 34 50"
+     },
+     {
+      "t": "cero seis, cuarenta, nueve, cero ocho",
+      "r": "0640908"
+     },
+     {
+      "t": "cero seis, doce, ochenta, siete",
+      "r": "0612807"
+     }
+    ]
+   }
   },
   {
    "dia": 16,
@@ -12968,8 +13402,7 @@ body{background:var(--bg);color:var(--txt)}
   }
  ],
  "_essai": false
-}
-</script>
+}</script>
 
 <script>
 'use strict';
@@ -13132,7 +13565,7 @@ function vistaMetodo() {
 function elegirNivel() {
   $('#app').innerHTML = pacoHTML("Bienvenue, détective ! En espagnol, tu es plutôt…", '¡Bienvenido/a! ¿Cuál es tu nivel?') +
     `<div class="card">` + NIVELES.map(v => `<button class="btn${v.k === '1' ? '' : ' sec'}" data-n="${v.k}">${v.ic} ${esc(v.fr)}<span class="es">${esc(v.es)}</span></button>`).join('') +
-    `<p class="es" style="margin-top:12px">Élève EspaBox ? Scanne plutôt ta carte QR personnelle : ton niveau est réglé tout seul. Tu pourras changer de niveau à tout moment.</p></div>`;
+    `<p class="es" style="margin-top:12px">Élève EspaBox ? Ouvre plutôt la tuile 🎄 dans EspaBox : ton niveau est réglé tout seul. Tu pourras changer de niveau à tout moment.</p></div>`;
   document.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { ST.nivel = b.dataset.n; guardar(); if ($('#pn')) $('#pn').value = ST.nivel; inicio(); });
 }
 
@@ -13359,6 +13792,7 @@ function solucionDe(c) {
   if (c.escena) o.objetivo = c.escena.objetivo + ' (' + c.escena.items[c.escena.objetivo].e + ')';
   if (c.tipo === 'acusacion') o.culpable = SC.culpable;
   if (c.preguntas) o.respuestas = (L(c.preguntas) || []).map(q => q.c);
+  if (c.ecoute) o.ecoute = (L(c.ecoute) || []).map(it => it.o ? it.o[it.c] : it.r);
   if (c.tipo === 'investigacion') {
     if (c.hipotesis) o.hipotesis = L(c.hipotesis.correcta);
     if (c.pruebas) o.pruebas = (L(c.pruebas) || []).map(q => q.c);
@@ -13505,15 +13939,45 @@ MEC.qcm = (el, c) => {
   return { check: () => gets.some(g => g() < 0) ? null : gets.every((g, k) => g() === P[k].c) };
 };
 
-MEC.terreno = (el, c) => {
-  const ok = () => !!ST.claves[norm(c.clave)];
-  el.innerHTML = `<p>📍 ${esc(L(c.enunciado))}</p>` + (ok()
-    ? `<p class="msg ok">✅ Code trouvé dans le lycée ! Appuie sur Valider.</p>`
-    : `<p class="es">Scanne le QR caché, ou tape le code écrit dessous.</p><input type="text" id="tin" autocomplete="off" placeholder="Código">`);
+MEC.ecoute = (el, c) => {
+  const N = parseInt(ST.nivel, 10) || 1;
+  const items = L(c.ecoute) || [];
+  const maxE = N === 1 ? 0 : (N <= 3 ? 2 : 1); /* 0 = écoutes illimitées */
+  const norm2 = v => String(v == null ? '' : v).replace(/[^0-9a-z]/gi, '').toLowerCase();
+  const ans = items.map(() => null), rows = [], reste = items.map(() => maxE);
+  let echecs = 0;
+  el.innerHTML = `<p>🔊 ${esc(L(c.enunciado))}</p>` +
+    (maxE ? `<p class="es">${maxE} écoute${maxE > 1 ? 's' : ''} par question · ${maxE} escucha${maxE > 1 ? 's' : ''} por pregunta</p>` : `<p class="es">Écoute autant de fois que tu veux · Escucha todas las veces que quieras</p>`);
+  const maj = i => { const b = rows[i].querySelector('.eco-play'); b.textContent = '🔊 ' + (i + 1) + (maxE ? '  (' + reste[i] + ')' : ''); b.disabled = !!maxE && reste[i] <= 0; b.style.opacity = b.disabled ? .45 : 1; };
+  items.forEach((it, i) => {
+    const row = document.createElement('div'); row.className = 'eco-row'; row.style.margin = '14px 0';
+    row.innerHTML = `<button class="btn sec eco-play" type="button"></button><p class="es eco-txt" style="display:${N === 1 ? 'block' : 'none'}">${esc(it.t)}</p>`;
+    rows.push(row); el.appendChild(row);
+    row.querySelector('.eco-play').onclick = () => { if (maxE) { if (reste[i] <= 0) return; reste[i]--; maj(i); } parler(it.t, 0.8); };
+    maj(i);
+    if (it.o) {
+      const bs = [];
+      melange(it.o.length).forEach(k => {
+        const b = document.createElement('button'); b.className = 'opt eco-op'; b.type = 'button'; b.textContent = it.o[k];
+        if (k === it.c) b.dataset.ok = '1';
+        b.onclick = () => { ans[i] = k === it.c; bs.forEach(x => x.classList.toggle('sel', x === b)); };
+        row.appendChild(b); bs.push(b);
+      });
+    } else {
+      const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'eco-in'; inp.autocomplete = 'off'; inp.inputMode = 'decimal'; inp.placeholder = 'En cifras'; inp.dataset.r = it.r;
+      inp.oninput = () => { const v = norm2(inp.value); ans[i] = v ? v === norm2(it.r) : null; };
+      row.appendChild(inp);
+    }
+  });
   return { check: () => {
-    if (ok()) return true;
-    const v = norm(($('#tin', el) || {}).value); if (!v) return null;
-    if (v === norm(c.clave)) { ST.claves[v] = 1; guardar(); return true; }
+    if (ans.some(a => a === null)) return null;
+    if (ans.filter(Boolean).length >= 2) return true;
+    echecs++;
+    rows.forEach((r, i) => {
+      r.style.borderLeft = ans[i] ? '' : '4px solid #e5484d'; r.style.paddingLeft = ans[i] ? '' : '8px';
+      reste[i] = maxE; maj(i);
+      if (echecs >= 2) r.querySelector('.eco-txt').style.display = 'block';
+    });
     return false;
   } };
 };
@@ -13924,9 +14388,13 @@ cargar();
       await toucher(z.querySelector('#cgo'));
       for (const q of (L(ci.preguntas) || [])) { await attendre(1300); await toucher(bouton(z, L(q.o[q.c])), 350); }
       await attendre(1500);
-    } else if (T === 'terreno') {
-      legende('Dans le lycée, il trouve le QR caché et tape le code : ' + ci.clave, 'Encuentra el código escondido.');
-      const i = z.querySelector('#tin'); if (i) await taper(i, ci.clave);
+    } else if (T === 'ecoute') {
+      legende('Il écoute chaque nombre, puis choisit ou tape la réponse.', 'Escucha y responde.');
+      for (const r of z.querySelectorAll('.eco-row')) {
+        const pl = r.querySelector('.eco-play'); if (pl && !pl.disabled) { await toucher(pl, 400); await finParole(6000); }
+        const bo = r.querySelector('.eco-op[data-ok]'); if (bo) await toucher(bo, 500);
+        const en = r.querySelector('.eco-in'); if (en) await taper(en, en.dataset.r);
+      }
     } else if (T === 'acusacion') {
       legende('Le grand jour : il regarde les suspects restants et accuse le coupable.', '¡Acusa al culpable!');
       await attendre(2500);
